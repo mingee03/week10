@@ -43,6 +43,13 @@ public class Movie {
     @Column(nullable = false)
     private Integer releaseYear;
 
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
     protected Movie() { }
 
     public Movie(MovieRequest request) {
