@@ -1,5 +1,6 @@
 package org.example.week09.service;
 
+import jakarta.transaction.Transactional;
 import org.example.week09.dto.MovieRequest;
 import org.example.week09.dto.MovieResponse;
 import org.example.week09.entity.Movie;
@@ -34,10 +35,12 @@ public class MovieService {
     }
 
     // Q8. @Transactional과 Dirty Checking은 어떤 관계가 있는가?
+    /*@Transactional을 통해 메소드 종료 시점에 JPA가 Dirty Checking을 한다.*/
+    @Transactional
     public MovieResponse update(Long id, MovieRequest request) {
         Movie movie = findEntity(id);
         movie.update(request);
-        return MovieResponse.from(repository.save(movie));
+        return MovieResponse.from(movie);
     }
 
     public void delete(Long id) {
@@ -51,4 +54,14 @@ public class MovieService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Movie not found: " + id));
     }
+    public List<MovieResponse> searchByGenre(String genre){
+        return repository.findByGenre(genre).stream().map(MovieResponse::from).toList();
+    }
+    public List<MovieResponse> searchByGenreAndMinRating(String genre, Double minRating){
+        return  repository.findByGenreAndRatingGreaterThanEqual(genre, minRating).stream().map(MovieResponse::from).toList();
+    }
+    public List<MovieResponse> searchByGenreOrderByRating(String genre){
+        return repository.findByGenreOrderByRatingDesc(genre).stream().map(MovieResponse::from).toList();
+    }
+
 }

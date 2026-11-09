@@ -2,6 +2,7 @@ package org.example.week09.repository;
 
 import org.example.week09.entity.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
 // Q3. JpaRepository<Entity, Long>에서 두 타입은 각각 무엇을 의미하는가?
 //Movie는 리포지토리가 다룰 JPA의 객체, Long은 해당 객체의 PK이다.
@@ -16,4 +17,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 // Q6. JpaRepository에서 기본 제공하는 메서드와 개발자가 직접 작성하는 Query Method의 차이는 무엇인가?
 // 기본 제공 메소드는 단순 표준적이고, 직접 작성하는 메서드는 목적에 따라 복잡한 조회가 가능하다.
 public interface MovieRepository extends JpaRepository<Movie, Long> {
+    List<Movie> findByGenre(String genre);
+    List<Movie> findByGenreAndRatingGreaterThanEqual(String genre, Double rating);
+    List<Movie> findByGenreOrderByRatingDesc(String genre);
+
 }

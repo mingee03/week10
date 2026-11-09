@@ -5,14 +5,7 @@ import org.example.week09.dto.MovieResponse;
 import org.example.week09.service.MovieService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
@@ -51,5 +44,19 @@ public class MovieController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/search/genre")
+    public List<MovieResponse> searchByGenre(@RequestParam String genre) {
+        return service.searchByGenre(genre);
+    }
+    @GetMapping("/search/genre-rating")
+    public List<MovieResponse> searchByGenreAndRating(
+            @RequestParam String genre,
+            @RequestParam Double minRating) {
+        return service.searchByGenreAndMinRating(genre, minRating);
+    }
+    @GetMapping("/search/genre-sorted")
+    public List<MovieResponse> searchByGenreOrderByRating(@RequestParam String genre) {
+        return service.searchByGenreOrderByRating(genre);
     }
 }
